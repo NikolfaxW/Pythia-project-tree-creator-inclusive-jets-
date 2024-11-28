@@ -7,6 +7,7 @@
 
 #include "Rtypes.h"
 #include "TTree.h"
+#include "VTTree.h"
 
 
 
@@ -18,7 +19,8 @@ bool increaseIdOrChageStatus(int id, std::string status); //ok status can be "tr
 void mainSec(const int numThreads, std::string  seed, TTree *&T, Float_t &Jet_Pt, Float_t &rapidity,
              const unsigned int & requiredNumberOfJets, unsigned int & numberOfJetsFound,
              Float_t &l11, Float_t &l105, Float_t &l115, Float_t &l12, Float_t &l13, Float_t &l20);
-
+void mainSecTest(const int numThreads, const std::string seed, const unsigned int &requiredNumberOfJets,
+                 unsigned int &numberOfJetsFound, const unsigned int id);
 
 
 #endif //PYTHIA_PROJECT_TREE_CREATOR_FUNCTIONS_H

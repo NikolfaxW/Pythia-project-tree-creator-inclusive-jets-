@@ -50,7 +50,9 @@ add_executable(Pythia-project-tree-creator-inclusive-jets main.cpp
         functions.cpp
         functions.h
         jetStructure.h
-        jetStructure.cpp)
+        jetStructure.cpp
+        VTTree.cpp
+        VTTree.h)
 
 # Convert ROOT_LIBS string to a list of libraries
 separate_arguments(ROOT_LIB_LIST UNIX_COMMAND "${ROOT_LIBS}")

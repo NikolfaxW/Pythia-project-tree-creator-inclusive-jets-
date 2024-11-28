@@ -17,7 +17,7 @@
 #include "functions.h"
 
 
-//!pTmin_jet - minimum pT for jets is not used
+
 
 
 int main() {
