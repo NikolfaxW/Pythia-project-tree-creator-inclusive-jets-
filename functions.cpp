@@ -9,17 +9,14 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <cstdio>
 #include <deque>
 #include <vector>
-#include <algorithm>
 #include <cmath>
 
 #include "Pythia8/Pythia.h"
 #include "TVector2.h"
 #include "fastjet/PseudoJet.hh"
 #include "fastjet/ClusterSequence.hh"
-#include "TCanvas.h"
 #include "TH2F.h"
 
 
@@ -70,7 +67,7 @@ bool increaseIdOrChageStatus(int id, std::string status) {
         std::cerr << "Error: file not opened" << std::endl;
         return false;
     }
-    file << status << std::endl << (id + 1) << std::endl;
+    file << status << std::endl << (id) << std::endl;
     file.close();
     return true;
 }
@@ -200,8 +197,8 @@ void mainSec(const int numThreads, std::string  seed, TTree *&T, Float_t &Jet_Pt
     }
 }
 
-void mainSecTest(const int numThreads, const std::string seed, const unsigned int &requiredNumberOfJets,
-                 unsigned int &numberOfJetsFound, const unsigned int id) {
+void mainSecTest(const int numThreads, const std::string seed, const unsigned int &requiredNumberOfJets, const unsigned int id) {
+    unsigned int numberOfJetsFound = 0;
     Pythia8::Pythia pythia; //create pythia object
     {
         std::lock_guard<std::mutex> lock(std::mutex);  // Lock the mutex
@@ -282,14 +279,16 @@ void mainSecTest(const int numThreads, const std::string seed, const unsigned in
                     T._l13 += pT_frac * pow(R_frac, 3);
                     T._l20 += pow(pT_frac, 2);
                 }
-                T.saveTTree("../results");
-                {
-                    std::lock_guard<std::mutex> lock(std::mutex);
-                    ++numberOfJetsFound;
-                    if (numberOfJetsFound % 100 == 0) showProgressBar(numberOfJetsFound, requiredNumberOfJets);
-                }
+                T.T->Fill();
+                numberOfJetsFound++;
+                std::cout << numberOfJetsFound << std::endl;
+//                    std::lock_guard<std::mutex> lock(std::mutex);
+//                    ++numberOfJetsFound;
+//                    if (numberOfJetsFound % 100 == 0) showProgressBar(numberOfJetsFound, requiredNumberOfJets);
+//                }
 
             }
         }
+
     }
 }

@@ -4,9 +4,9 @@
 #include "VTTree.h"
 
 #include <mutex>
+#include <iostream>
 
 #include "TFile.h"
-
 
 
 VTTree::VTTree(std::string seed, const unsigned int id) {
@@ -21,12 +21,15 @@ VTTree::VTTree(std::string seed, const unsigned int id) {
     T->Branch("l20", &_l20, "l20");
     T->Branch("jet_pT", &Jet_PT, "jet_pT");
     T->Branch("eta", &rapidity, "eta");
+
 }
 
 bool VTTree::saveTTree(std::string path) {
     std::lock_guard<std::mutex> lock(std::mutex);
-    TFile *file = new TFile((path + std::to_string(_id) + " : " + _seed).c_str(), "RECREATE"); //create a file to store the tree as an output
-    if(file->IsZombie()) return false;
+    TFile *file = new TFile((path + std::to_string(_id) + " : " + _seed + ".root").c_str(),
+                            "RECREATE"); //create a file to store the tree as an output
+    if (file->IsZombie())
+        return false;
 
     T->Print();
     T->Write();
@@ -37,5 +40,6 @@ bool VTTree::saveTTree(std::string path) {
 }
 
 VTTree::~VTTree() {
+    saveTTree("../results/");
     delete T;
 }
